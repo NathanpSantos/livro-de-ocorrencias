@@ -1,6 +1,6 @@
 body {
     background: linear-gradient(to right, #e3f2fd, #ffffff);
-    background-image: url("{{ url_for('static', filename='condominio.png') }}");
+    background-image: url("/static/img/condominio.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -12,10 +12,12 @@ body {
 .welcome-box {
     max-width: 600px;
     margin: 100px auto;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.75); /* transparência mais suave */
+    backdrop-filter: blur(10px);                
+    -webkit-backdrop-filter: blur(10px);        
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    box-shadow: 0 0 20px rgba(0,0,0,0.25);       
     text-align: center;
 }
 
