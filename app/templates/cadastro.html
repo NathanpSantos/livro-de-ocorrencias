@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page">
+
+    <div class="login-box">
+        <h2><i class="fas fa-user-plus"></i> Cadastro</h2>
+
+        {% if erro %}
+            <p style="color:red">{{ erro }}</p>
+        {% endif %}
+
+        <form method="post">
+            <label><i class="fas fa-user"></i> Nome:</label>
+            <input type="text" name="nome" required>
+
+            <label><i class="fas fa-envelope"></i> Email:</label>
+            <input type="email" name="email" required>
+
+            <label><i class="fas fa-lock"></i> Senha:</label>
+            <input type="password" name="senha" required>
+
+            <label><i class="fas fa-home"></i> Nº da Casa:</label>
+            <input type="text" name="numero_casa" required>
+
+
+            <button type="submit"><i class="fas fa-check-circle"></i> Cadastrar</button>
+        </form>
+
+        <p style="text-align:center"><a href="{{ url_for('login') }}">Já tem conta? Entrar</a></p>
+    </div>
+
+</body>
+</html>

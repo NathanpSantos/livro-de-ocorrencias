@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico da Ocorrência</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="historico-container">
+        <h2>Histórico da Ocorrência</h2>
+        <ul class="historico-lista">
+            {% for h in historico %}
+            <li class="historico-item">
+                <strong>Status:</strong> {{ h.status }}
+                <span><strong>Data:</strong> {{ h.data.strftime('%d/%m/%Y %H:%M') }}</span>
+                {% if h.resposta %}
+                    <span><strong>Resposta:</strong> {{ h.resposta }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <div style="text-align:center; margin-top:20px;">
+            <a href="{{ url_for('painel') }}">← Voltar ao Painel</a>
+        </div>
+    </div>
+</body>
+</html>

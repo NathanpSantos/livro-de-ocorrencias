@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="top-header">
+    <i class="fas fa-chart-line"></i>
+    <h2>Painel de Ocorrências</h2>
+</header>
+{% if tipo == 'admin' %}
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a class="btn" href="{{ url_for('listar_usuarios') }}"><i class="fas fa-users-cog"></i> Gerenciar Usuários</a>
+    </div>
+{% endif %}
+
+{% if tipo == 'admin' %}
+    <div class="dashboard">
+        <div class="card">
+            <h3><i class="fas fa-list"></i> Total</h3>
+            <p>{{ resumo.total }}</p>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-hourglass-start"></i> Pendentes</h3>
+            <p>{{ resumo.pendentes }}</p>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-search"></i> Em análise</h3>
+            <p>{{ resumo.em_analise }}</p>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-check-circle"></i> Respondidas</h3>
+            <p>{{ resumo.respondidas }}</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 10px;">
+        <a href="{{ url_for('exportar_excel') }}" class="btn"><i class="fas fa-file-excel"></i> Exportar Excel</a>
+        <a href="{{ url_for('exportar_pdf') }}" class="btn"><i class="fas fa-file-pdf"></i> Exportar PDF</a>
+    </div>
+    <form method="get" action="{{ url_for('painel') }}">
+        <label>Filtrar por status:</label>
+        <select name="filtro_status">
+            <option value="">Todos</option>
+            <option value="Pendente">Pendente</option>
+            <option value="Em análise">Em análise</option>
+            <option value="Respondida">Respondida</option>
+        </select>
+        <button type="submit"><i class="fas fa-filter"></i> Filtrar</button>
+    </form>
+{% endif %}
+
+{% if tipo == 'morador' %}
+    <form method="post" action="{{ url_for('nova_ocorrencia') }}">
+        <label>Tipo:</label>
+        <input type="text" name="tipo" required>
+        <label>Descrição:</label>
+        <textarea name="descricao" required></textarea>
+        <button type="submit"><i class="fas fa-paper-plane"></i> Enviar</button>
+    </form>
+{% endif %}
+
+<h3><i class="fas fa-comments"></i> Ocorrências:</h3>
+
+{% for o in ocorrencias %}
+    <div class="ocorrencia">
+        <strong><i class="fas fa-comment-alt"></i> {{ o.tipo }}</strong><br>
+        <i class="fas fa-clock"></i> Status: {{ o.status }}<br>
+        <i class="fas fa-calendar-alt"></i> Data: {{ o.data_criacao.strftime('%d/%m/%Y %H:%M') }}<br>
+
+        <!-- ✅ Aqui dentro do loop sim pode usar `o.resposta` -->
+        {% if o.resposta %}
+            <i class="fas fa-envelope-open-text"></i> Resposta: {{ o.resposta }}<br>
+            <i class="fas fa-calendar-check"></i> Respondido em: {{ o.data_ultima_resposta.strftime('%d/%m/%Y %H:%M') if o.data_ultima_resposta else '---' }}<br>
+            <i class="fas fa-user-shield"></i> Respondido por: <strong>{{ o.respondido_por }}</strong><br>
+            {% if tipo == 'admin' %}
+                <a href="{{ url_for('editar_resposta', id=o.id) }}"><i class="fas fa-pen-to-square"></i> Editar Resposta</a>
+            {% endif %}
+        {% endif %}
+
+        {% if o.data_ultima_resposta %}
+        <i class="fas fa-calendar-check"></i> Respondido em: {{ o.data_ultima_resposta.strftime('%d/%m/%Y %H:%M') }}<br>
+        {% endif %}
+
+        <a href="{{ url_for('historico_respostas', ocorrencia_id=o.id) }}">
+            <i class="fas fa-clock-rotate-left"></i> Ver Histórico
+        </a>
+
+
+        {% if tipo == 'admin' %}
+        <i class="fas fa-home"></i> Casa: {{ o.usuario.numero_casa }}<br>
+        {% endif %}
+
+
+        {% if tipo == 'admin' and not o.resposta %}
+            <form method="post" action="{{ url_for('responder', id=o.id) }}">
+                <textarea name="resposta" placeholder="Responder..." required></textarea>
+                <button type="submit"><i class="fas fa-reply"></i> Enviar Resposta</button>
+            </form>
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
+
+<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Sair</a>
+
+</body>
+</html>
