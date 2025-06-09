@@ -1,53 +1,50 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f7f9fb;
-    padding: 40px;
-    color: #333;
-}
-
-.home-page {
-    background: linear-gradient(to bottom, #dceff9 0%, #f7fbfd 100%);
+    background: linear-gradient(to right, #e3f2fd, #ffffff);
+    background-image: url("{{ url_for('static', filename='condominio.png') }}");
     background-size: cover;
-    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.welcome-box {
+    max-width: 600px;
+    margin: 100px auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
     text-align: center;
-    padding: 50px 20px;
-    color: #2c3e50;
 }
 
-.logo-area h1 {
-    font-size: 32px;
-    color: #2c3e50;
-    margin-top: 15px;
+h1 {
+    color: #0d47a1;
+    font-size: 28px;
+    margin-top: 20px;
 }
 
-.logo-area p {
+p {
+    color: #333;
+    margin: 10px 0 30px;
     font-size: 16px;
-    color: #3f5f78;
-    margin-top: 10px;
-    margin-bottom: 30px;
 }
 
-.logo-area img {
-    width: 140px;
-    height: auto;
-    margin-bottom: 5px;
-}
-
-.btn-area .btn {
-    margin: 10px;
-    padding: 12px 30px;
-    font-size: 16px;
-    border-radius: 8px;
-    background-color: #2980b9;
-    color: white;
-    border: none;
-    text-decoration: none;
+.botao-central .btn {
     display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    background-color: #1976d2;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
-.btn-area .btn:hover {
-    background-color: #216a94;
+.botao-central .btn:hover {
+    background-color: #0d47a1;
 }
 
 form {

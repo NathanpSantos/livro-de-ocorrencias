@@ -6,18 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="home-page">
+<body>
 
-    <div class="logo-area">
-        <img src="{{ url_for('static', filename='img/logo-condominio.png') }}" alt="Logo do Condomínio Bom Clima II">
+    <div class="welcome-box">
+        <img src="{{ url_for('static', filename='logo-condominio.png') }}" alt="Logo do Condomínio" width="120">
         <h1>Livro Digital de Ocorrências</h1>
-        <hr>
-        <p>Bem-vindo à plataforma de comunicação segura entre moradores e administração do condomínio.</p>
-    </div>
+        <p>Plataforma segura para registrar, acompanhar e resolver ocorrências no seu condomínio.</p>
 
-    <div class="btn-area">
-        <a class="btn" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Entrar</a>
-        <a class="btn" href="{{ url_for('cadastro') }}"><i class="fas fa-user-plus"></i> Cadastrar</a>
+        <div class="botao-central">
+            <a class="btn" href="{{ url_for('login') }}"><i class="fas fa-sign-in-alt"></i> Entrar</a>
+            <a class="btn" href="{{ url_for('cadastro') }}"><i class="fas fa-user-plus"></i> Cadastrar</a>
+        </div>
     </div>
 
 </body>

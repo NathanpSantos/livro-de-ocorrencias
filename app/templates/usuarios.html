@@ -15,14 +15,14 @@
         <tr>
             <th>Nome</th>
             <th>Email</th>
-            <th>Tipo</th>
+            <th>Ocorrencia</th>
             <th>Ações</th>
         </tr>
         {% for u in usuarios %}
         <tr>
             <td>{{ u.nome }}</td>
             <td>{{ u.email }}</td>
-            <td>{{ u.tipo }}</td>
+            <td>{{ u.ocorrencia }}</td>
             <td>
                 {% if u.tipo == 'morador' %}
                     <a href="{{ url_for('promover_usuario', id=u.id) }}">🔼 Promover</a>
