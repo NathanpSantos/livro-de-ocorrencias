@@ -1,4 +1,4 @@
-body {
+.tela-inicial {
     background: linear-gradient(to right, #e3f2fd, #ffffff);
     background-image: url("/static/img/condominio.png");
     background-size: cover;
@@ -186,14 +186,17 @@ li {
 }
 
 .login-page {
-    background: linear-gradient(to bottom, #dceff9 0%, #f7fbfd 100%);
-    background-size: cover;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+    background-image: radial-gradient(circle at top left, #dceff9, transparent 60%), 
+                      radial-gradient(circle at bottom right, #f0f8ff, transparent 70%);
+    background-blend-mode: overlay;
     min-height: 100vh;
     padding: 50px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #2c3e50;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .login-box {
