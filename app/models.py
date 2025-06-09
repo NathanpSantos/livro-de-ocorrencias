@@ -12,7 +12,7 @@ class Usuario(db.Model):
 
 class Ocorrencia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     tipo = db.Column(db.String(50), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(50), default='Pendente')
@@ -20,6 +20,7 @@ class Ocorrencia(db.Model):
     resposta = db.Column(db.Text)
     respondido_por = db.Column(db.String(100))
     usuario = db.relationship('Usuario', backref='ocorrencias')
+    data_ultima_resposta = db.Column(db.DateTime)
 
 class Historico(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -102,6 +102,7 @@ def responder(id):
         ocorrencia.resposta = resposta
         ocorrencia.status = 'Respondida'
         historico = Historico(ocorrencia_id=ocorrencia.id, resposta=resposta, status='Respondida')
+        ocorrencia.data_ultima_resposta = datetime.utcnow()
         db.session.add(historico)
         db.session.commit()
     return redirect(url_for('painel'))

@@ -69,6 +69,7 @@
 {% for o in ocorrencias %}
     <div class="ocorrencia">
         <strong><i class="fas fa-comment-alt"></i> {{ o.tipo }}</strong><br>
+        <i class="fas fa-user"></i> Enviado por: <strong>{{ o.usuario.nome }}</strong><br>
         <i class="fas fa-clock"></i> Status: {{ o.status }}<br>
         <i class="fas fa-calendar-alt"></i> Data: {{ o.data_criacao.strftime('%d/%m/%Y %H:%M') }}<br>
 
