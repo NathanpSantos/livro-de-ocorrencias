@@ -1,3 +1,11 @@
+body {
+    background: linear-gradient(to bottom, #e9f1fb, #f8fbff);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+}
+
 .tela-inicial {
     background: linear-gradient(to right, #e3f2fd, #ffffff);
     background-image: url("/static/img/condominio.png");
@@ -186,14 +194,14 @@ li {
 }
 
 .login-page {
-    background: linear-gradient(135deg, #e6f0ff, #dceeff, #f7faff);
-    min-height: 100vh;
-    background-attachment: fixed;
+    background: url('/static/img/fundo-login.png') no-repeat center center fixed;
     background-size: cover;
+    min-height: 100vh;
+    padding: 50px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 50px 20px;
+    color: #2c3e50;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
