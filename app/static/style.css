@@ -285,3 +285,64 @@ li {
     color: #555;
     font-size: 14px;
 }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Garante que a caixa central se ajuste em telas menores */
+.welcome-box, .login-box, .historico-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 768px) {
+    body {
+        background-size: cover;
+        background-position: top center;
+    }
+
+    h1, h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .card p {
+        font-size: 20px;
+    }
+
+    .botao-central .btn {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .login-box, .welcome-box {
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    .ocorrencia {
+        font-size: 14px;
+        word-wrap: break-word;
+    }
+
+    .form-group, input, textarea, select, button {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .top-header {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
