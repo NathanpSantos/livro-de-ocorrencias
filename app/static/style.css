@@ -19,7 +19,7 @@ body {
 
 .welcome-box {
     max-width: 600px;
-    margin: 100px auto;
+    margin: 60px auto 20px;
     background-color: rgba(255, 255, 255, 0.75); /* transparência mais suave */
     backdrop-filter: blur(10px);                
     -webkit-backdrop-filter: blur(10px);        
@@ -301,6 +301,14 @@ img {
 
 /* Responsividade para telas pequenas */
 @media (max-width: 768px) {
+    body.tela-inicial {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
     body {
         background-size: cover;
         background-position: top center;
@@ -320,12 +328,14 @@ img {
     }
 
     .botao-central .btn {
-        display: block;
         width: 100%;
-        margin: 10px 0;
+        margin: 8px 0;
+        font-size: 16px;
     }
 
+
     .login-box, .welcome-box {
+        margin: 20px auto;
         padding: 20px;
         box-shadow: none;
     }
