@@ -186,26 +186,25 @@ li {
 }
 
 .login-page {
-    background: linear-gradient(135deg, #e3f2fd, #ffffff);
-    background-image: radial-gradient(circle at top left, #dceff9, transparent 60%), 
-                      radial-gradient(circle at bottom right, #f0f8ff, transparent 70%);
-    background-blend-mode: overlay;
+    background: linear-gradient(135deg, #e6f0ff, #dceeff, #f7faff);
     min-height: 100vh;
-    padding: 50px 20px;
+    background-attachment: fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #2c3e50;
+    padding: 50px 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
 .login-box {
-    background-color: rgba(255, 255, 255, 0.97);
+    background-color: rgba(255, 255, 255, 0.95);
     padding: 30px 40px;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    width: 100%;
     max-width: 400px;
+    width: 100%;
     text-align: left;
 }
 
