@@ -307,6 +307,25 @@ img {
     margin: 20px auto;
 }
 
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+    background-color: #e6f9ee;
+    color: #2e7d32;
+    border: 1px solid #2e7d32;
+}
+
+
+
 /* Responsividade para telas pequenas */
 @media (max-width: 768px) {
     body.tela-inicial {

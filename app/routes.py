@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, send_file
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_file, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import Usuario, Ocorrencia, Historico
 from app import db
@@ -95,8 +95,9 @@ def nova_ocorrencia():
 
     # Envia e-mail
     enviar_email_ocorrencia(usuario.nome, usuario.email, tipo, descricao)
-
+    flash("Ocorrência enviada com sucesso! O administrador foi notificado por e-mail.", "success")
     return redirect(url_for('main.painel'))
+
 
 
 @main.route('/responder/<int:id>', methods=['POST'])
