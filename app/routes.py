@@ -8,7 +8,7 @@ import pandas as pd
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
-from utils import enviar_email_ocorrencia
+from app.utils import enviar_email_ocorrencia
 import os
 
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
