@@ -1,14 +1,23 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 db = SQLAlchemy()
-app = Flask(__name__)  # define antes de usar
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///ocorrencias.db'
-app.config['SECRET_KEY'] = 'sua_chave_secreta'
-db.init_app(app)
+migrate = Migrate()
 
-migrate = Migrate(app, db)  # agora app já está definido
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback-key')
 
-# Evita importações circulares
-from app import routes, models
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from app.routes import main
+    app.register_blueprint(main)
+
+    return app

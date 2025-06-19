@@ -1,36 +1,35 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import Usuario, Ocorrencia, Historico
-from app import db, app
+from app import db
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
-from flask_migrate import Migrate
-import os
-from flask import send_file
 from io import BytesIO
 import pandas as pd
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
-from .models import Ocorrencia, Usuario
+from utils import enviar_email_ocorrencia
+import os
+
+EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
+EMAIL_SENDER = os.environ.get('EMAIL_SENDER')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 main = Blueprint('main', __name__)
 
-@app.route('/')
+
+@main.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/usuarios')
+@main.route('/usuarios')
 def listar_usuarios():
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('login'))
     usuarios = Usuario.query.all()
     return render_template('usuarios.html', usuarios=usuarios)
 
-@app.route('/cadastro', methods=['GET', 'POST'])
+@main.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -46,7 +45,7 @@ def cadastro():
     return render_template('cadastro.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@main.route('/login', methods=['GET', 'POST'])
 def login():
     erro = None
     if request.method == 'POST':
@@ -61,7 +60,7 @@ def login():
             erro = "Email ou senha inválidos."
     return render_template('login.html', erro=erro)
 
-@app.route('/painel')
+@main.route('/painel')
 def painel():
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
@@ -81,18 +80,26 @@ def painel():
         resumo = {}
     return render_template('painel.html', ocorrencias=ocorrencias, tipo=tipo, resumo=resumo)
 
-@app.route('/nova_ocorrencia', methods=['POST'])
+@main.route('/nova_ocorrencia', methods=['POST'])
 def nova_ocorrencia():
     if 'usuario_id' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     tipo = request.form['tipo']
     descricao = request.form['descricao']
-    nova = Ocorrencia(usuario_id=session['usuario_id'], tipo=tipo, descricao=descricao)
+
+    usuario = Usuario.query.get(session['usuario_id'])
+
+    nova = Ocorrencia(usuario_id=usuario.id, tipo=tipo, descricao=descricao)
     db.session.add(nova)
     db.session.commit()
-    return redirect(url_for('painel'))
 
-@app.route('/responder/<int:id>', methods=['POST'])
+    # Envia e-mail
+    enviar_email_ocorrencia(usuario.nome, usuario.email, tipo, descricao)
+
+    return redirect(url_for('main.painel'))
+
+
+@main.route('/responder/<int:id>', methods=['POST'])
 def responder(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('login'))
@@ -107,7 +114,7 @@ def responder(id):
         db.session.commit()
     return redirect(url_for('painel'))
 
-@app.route('/editar_ocorrencia/<int:id>', methods=['GET', 'POST'])
+@main.route('/editar_ocorrencia/<int:id>', methods=['GET', 'POST'])
 def editar_ocorrencia(id):
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
@@ -123,7 +130,7 @@ def editar_ocorrencia(id):
         return redirect(url_for('painel'))
     return render_template('editar_ocorrencia.html', ocorrencia=ocorrencia)
 
-@app.route('/editar_resposta/<int:id>', methods=['GET', 'POST'])
+@main.route('/editar_resposta/<int:id>', methods=['GET', 'POST'])
 def editar_resposta(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('login'))
@@ -137,7 +144,7 @@ def editar_resposta(id):
         return redirect(url_for('painel'))
     return render_template('editar_resposta.html', ocorrencia=ocorrencia)
 
-@app.route('/historico/<int:ocorrencia_id>')
+@main.route('/historico/<int:ocorrencia_id>')
 def historico_respostas(ocorrencia_id):
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
@@ -147,7 +154,7 @@ def historico_respostas(ocorrencia_id):
     historico = Historico.query.filter_by(ocorrencia_id=ocorrencia_id).order_by(Historico.data_resposta.desc()).all()
     return render_template('historico_respostas.html', ocorrencia=ocorrencia, historico=historico)
 
-@app.route('/promover/<int:id>')
+@main.route('/promover/<int:id>')
 def promover_usuario(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('login'))
@@ -159,7 +166,7 @@ def promover_usuario(id):
 
     return redirect(url_for('listar_usuarios'))
 
-@app.route('/excluir/<int:id>')
+@main.route('/excluir/<int:id>')
 def excluir_usuario(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('login'))
@@ -171,7 +178,7 @@ def excluir_usuario(id):
 
     return redirect(url_for('listar_usuarios'))
 
-@app.route('/rebaixar/<int:id>')
+@main.route('/rebaixar/<int:id>')
 def rebaixar_usuario(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('login'))
@@ -183,7 +190,7 @@ def rebaixar_usuario(id):
 
     return redirect(url_for('listar_usuarios'))
 
-@app.route('/exportar_excel')
+@main.route('/exportar_excel')
 def exportar_excel():
     ocorrencias = Ocorrencia.query.all()
     dados = [{
@@ -202,7 +209,7 @@ def exportar_excel():
     return send_file(excel_buffer, as_attachment=True, download_name='relatorio_ocorrencias.xlsx', mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
 
-@app.route('/exportar_pdf')
+@main.route('/exportar_pdf')
 def exportar_pdf():
     ocorrencias = Ocorrencia.query.all()
     dados = [{
@@ -232,7 +239,7 @@ def exportar_pdf():
 
 
 
-@app.route('/logout')
+@main.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
