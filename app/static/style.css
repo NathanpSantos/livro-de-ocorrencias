@@ -6,6 +6,10 @@ body {
     color: #2c3e50;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
 .tela-inicial {
     background: linear-gradient(to right, #e3f2fd, #ffffff);
     background-image: url("/static/img/condominio.png");
@@ -207,14 +211,16 @@ li {
 
 
 .login-box {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 30px 40px;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 25px 20px;
+    background-color: rgba(255, 255, 255, 0.96);
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    max-width: 400px;
-    width: 100%;
     text-align: left;
 }
+
 
 .login-box h2 {
     margin-bottom: 20px;
@@ -331,14 +337,19 @@ img {
         width: 100%;
         margin: 8px 0;
         font-size: 16px;
+        padding: 12px 15px;
     }
+
 
 
     .login-box, .welcome-box {
         margin: 20px auto;
         padding: 20px;
         box-shadow: none;
+        max-width: 360px;
+        width: 90%;
     }
+
 
     .ocorrencia {
         font-size: 14px;
@@ -355,4 +366,8 @@ img {
         gap: 5px;
         text-align: center;
     }
+}
+
+* {
+    box-sizing: border-box;
 }
