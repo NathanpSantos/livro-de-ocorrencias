@@ -107,7 +107,7 @@
 
 
         {% if tipo == 'admin' and not o.resposta %}
-            <form method="post" action="{{ url_for('responder', id=o.id) }}">
+            <form method="post" action="{{ url_for('main.responder', id=o.id) }}">
                 <textarea name="resposta" placeholder="Responder..." required></textarea>
                 <button type="submit"><i class="fas fa-reply"></i> Enviar Resposta</button>
             </form>
