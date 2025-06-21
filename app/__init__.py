@@ -11,7 +11,7 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///banco.db')
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback-key')
 
     db.init_app(app)
