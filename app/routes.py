@@ -78,7 +78,7 @@ def painel():
     else:
         ocorrencias = Ocorrencia.query.filter_by(usuario_id=usuario_id).all()
         resumo = {}
-    return render_template('painel.html', ocorrencias=ocorrencias, tipo=tipo, resumo=resumo)
+    return render_template('main.painel.html', ocorrencias=ocorrencias, tipo=tipo, resumo=resumo)
 
 @main.route('/nova_ocorrencia', methods=['POST'])
 def nova_ocorrencia():
