@@ -26,11 +26,11 @@
             <td>{{ u.ocorrencia }}</td>
             <td>
                 {% if u.tipo == 'morador' %}
-                    <a href="{{ url_for('promover_usuario', id=u.id) }}">🔼 Promover</a>
+                    <a href="{{ url_for('main.promover_usuario', id=u.id) }}">🔼 Promover</a>
                 {% else %}
-                    <a href="{{ url_for('rebaixar_usuario', id=u.id) }}">🔽 Rebaixar</a>
+                    <a href="{{ url_for('main.rebaixar_usuario', id=u.id) }}">🔽 Rebaixar</a>
                 {% endif %}
-                | <a href="{{ url_for('excluir_usuario', id=u.id) }}" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">🗑️ Excluir</a>
+                | <a href="{{ url_for('main.excluir_usuario', id=u.id) }}" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">🗑️ Excluir</a>
             </td>
         </tr>
         {% endfor %}

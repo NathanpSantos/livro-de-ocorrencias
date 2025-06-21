@@ -25,9 +25,9 @@ def index():
 @main.route('/usuarios')
 def listar_usuarios():
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     usuarios = Usuario.query.all()
-    return render_template('usuarios.html', usuarios=usuarios)
+    return render_template('main.usuarios.html', usuarios=usuarios)
 
 @main.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -41,7 +41,7 @@ def cadastro():
         novo_usuario = Usuario(nome=nome, email=email, senha_hash=senha_hash, numero_casa=numero_casa)
         db.session.add(novo_usuario)
         db.session.commit()
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     return render_template('cadastro.html')
 
 
@@ -63,7 +63,7 @@ def login():
 @main.route('/painel')
 def painel():
     if 'usuario_id' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     usuario_id = session['usuario_id']
     tipo = session['usuario_tipo']
     filtro_status = request.args.get('filtro_status')
@@ -103,7 +103,7 @@ def nova_ocorrencia():
 @main.route('/responder/<int:id>', methods=['POST'])
 def responder(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     resposta = request.form['resposta']
     ocorrencia = Ocorrencia.query.get(id)
     if ocorrencia:
@@ -113,28 +113,28 @@ def responder(id):
         ocorrencia.data_ultima_resposta = datetime.utcnow()
         db.session.add(historico)
         db.session.commit()
-    return redirect(url_for('painel'))
+    return redirect(url_for('main.painel'))
 
 @main.route('/editar_ocorrencia/<int:id>', methods=['GET', 'POST'])
 def editar_ocorrencia(id):
     if 'usuario_id' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     ocorrencia = Ocorrencia.query.get(id)
     if session['usuario_tipo'] != 'admin' and ocorrencia.usuario_id != session['usuario_id']:
-        return redirect(url_for('painel'))
+        return redirect(url_for('main.painel'))
     if request.method == 'POST':
         ocorrencia.tipo = request.form['tipo']
         ocorrencia.descricao = request.form['descricao']
         historico = Historico(ocorrencia_id=ocorrencia.id, resposta=ocorrencia.resposta, status=ocorrencia.status)
         db.session.add(historico)
         db.session.commit()
-        return redirect(url_for('painel'))
+        return redirect(url_for('main.painel'))
     return render_template('editar_ocorrencia.html', ocorrencia=ocorrencia)
 
 @main.route('/editar_resposta/<int:id>', methods=['GET', 'POST'])
 def editar_resposta(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     ocorrencia = Ocorrencia.query.get(id)
     if request.method == 'POST':
         ocorrencia.resposta = request.form['resposta']
@@ -142,54 +142,54 @@ def editar_resposta(id):
         historico = Historico(ocorrencia_id=ocorrencia.id, resposta=ocorrencia.resposta, status='Respondida')
         db.session.add(historico)
         db.session.commit()
-        return redirect(url_for('painel'))
+        return redirect(url_for('main.painel'))
     return render_template('editar_resposta.html', ocorrencia=ocorrencia)
 
 @main.route('/historico/<int:ocorrencia_id>')
 def historico_respostas(ocorrencia_id):
     if 'usuario_id' not in session:
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
     ocorrencia = Ocorrencia.query.get(ocorrencia_id)
     if not ocorrencia:
-        return redirect(url_for('painel'))
+        return redirect(url_for('main.painel'))
     historico = Historico.query.filter_by(ocorrencia_id=ocorrencia_id).order_by(Historico.data_resposta.desc()).all()
     return render_template('historico_respostas.html', ocorrencia=ocorrencia, historico=historico)
 
 @main.route('/promover/<int:id>')
 def promover_usuario(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
 
     usuario = Usuario.query.get(id)
     if usuario:
         usuario.tipo = 'admin'
         db.session.commit()
 
-    return redirect(url_for('listar_usuarios'))
+    return redirect(url_for('main.listar_usuarios'))
 
 @main.route('/excluir/<int:id>')
 def excluir_usuario(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
 
     usuario = Usuario.query.get(id)
     if usuario:
         db.session.delete(usuario)
         db.session.commit()
 
-    return redirect(url_for('listar_usuarios'))
+    return redirect(url_for('main.listar_usuarios'))
 
 @main.route('/rebaixar/<int:id>')
 def rebaixar_usuario(id):
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
-        return redirect(url_for('login'))
+        return redirect(url_for('main.login'))
 
     usuario = Usuario.query.get(id)
     if usuario:
         usuario.tipo = 'morador'
         db.session.commit()
 
-    return redirect(url_for('listar_usuarios'))
+    return redirect(url_for('main.listar_usuarios'))
 
 @main.route('/exportar_excel')
 def exportar_excel():
