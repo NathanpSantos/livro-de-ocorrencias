@@ -58,7 +58,7 @@ def login():
             return redirect(url_for('main.painel'))
         else:
             erro = "Email ou senha inválidos."
-    return render_template('login.html', erro=erro)
+    return render_template('main/login.html', erro=erro)
 
 @main.route('/painel')
 def painel():
@@ -129,7 +129,7 @@ def editar_ocorrencia(id):
         db.session.add(historico)
         db.session.commit()
         return redirect(url_for('main.painel'))
-    return render_template('editar_ocorrencia.html', ocorrencia=ocorrencia)
+    return render_template('main/editar_ocorrencia.html', ocorrencia=ocorrencia)
 
 @main.route('/editar_resposta/<int:id>', methods=['GET', 'POST'])
 def editar_resposta(id):
@@ -143,7 +143,7 @@ def editar_resposta(id):
         db.session.add(historico)
         db.session.commit()
         return redirect(url_for('main.painel'))
-    return render_template('editar_resposta.html', ocorrencia=ocorrencia)
+    return render_template('main/editar_resposta.html', ocorrencia=ocorrencia)
 
 @main.route('/historico/<int:ocorrencia_id>')
 def historico_respostas(ocorrencia_id):
@@ -153,7 +153,7 @@ def historico_respostas(ocorrencia_id):
     if not ocorrencia:
         return redirect(url_for('main.painel'))
     historico = Historico.query.filter_by(ocorrencia_id=ocorrencia_id).order_by(Historico.data_resposta.desc()).all()
-    return render_template('historico_respostas.html', ocorrencia=ocorrencia, historico=historico)
+    return render_template('main/historico_respostas.html', ocorrencia=ocorrencia, historico=historico)
 
 @main.route('/promover/<int:id>')
 def promover_usuario(id):
