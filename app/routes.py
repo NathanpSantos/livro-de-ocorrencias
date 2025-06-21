@@ -27,7 +27,7 @@ def listar_usuarios():
     if 'usuario_id' not in session or session['usuario_tipo'] != 'admin':
         return redirect(url_for('main.login'))
     usuarios = Usuario.query.all()
-    return render_template('main.usuarios.html', usuarios=usuarios)
+    return render_template('main/usuarios.html', usuarios=usuarios)
 
 @main.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
