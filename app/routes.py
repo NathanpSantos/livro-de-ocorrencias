@@ -9,6 +9,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from app.utils import enviar_email_ocorrencia
+from app.utils import enviar_email_resposta
+
 import os
 
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
@@ -113,6 +115,16 @@ def responder(id):
         ocorrencia.data_ultima_resposta = datetime.utcnow()
         db.session.add(historico)
         db.session.commit()
+        
+        # ENVIA E-MAIL PARA O MORADOR
+        if ocorrencia.usuario:
+            enviar_email_resposta(
+                nome=ocorrencia.usuario.nome,
+                email_destino=ocorrencia.usuario.email,
+                tipo=ocorrencia.tipo,
+                resposta=resposta
+            )
+        
     return redirect(url_for('main.painel'))
 
 @main.route('/editar_ocorrencia/<int:id>', methods=['GET', 'POST'])
