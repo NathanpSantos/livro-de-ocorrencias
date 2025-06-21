@@ -66,6 +66,6 @@ def enviar_email_resposta(nome, email_destino, tipo, resposta):
             servidor.starttls()
             servidor.login(EMAIL_SENDER, EMAIL_PASSWORD)
             servidor.send_message(msg)
-            print("✅ E-mail de resposta enviado ao morador.")
+            print("E-mail de resposta enviado ao morador.")
     except Exception as e:
-        print(f"❌ Erro ao enviar e-mail de resposta: {e}")
+        print(f"Erro ao enviar e-mail de resposta: {e}")
