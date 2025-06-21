@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from app import create_app, db
 from app.models import Usuario
 from werkzeug.security import generate_password_hash
@@ -12,7 +15,7 @@ with app.app_context():
             email='acondominio568@gmail.com',
             senha_hash=generate_password_hash('admin123'),
             tipo='admin',
-            numero_casa='ADM'  # ✅ Adicione esse campo se ele for obrigatório
+            numero_casa='ADM'  # se for obrigatório
         )
         db.session.add(admin)
         db.session.commit()

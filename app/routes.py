@@ -55,7 +55,7 @@ def login():
         if usuario and check_password_hash(usuario.senha_hash, senha):
             session['usuario_id'] = usuario.id
             session['usuario_tipo'] = usuario.tipo
-            return redirect(url_for('painel'))
+            return redirect(url_for('main.painel'))
         else:
             erro = "Email ou senha inválidos."
     return render_template('login.html', erro=erro)
