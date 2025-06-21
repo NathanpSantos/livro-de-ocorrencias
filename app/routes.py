@@ -10,6 +10,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from app.utils import enviar_email_ocorrencia
 from app.utils import enviar_email_resposta
+from pytz import timezone
 
 import os
 
@@ -112,7 +113,8 @@ def responder(id):
         ocorrencia.resposta = resposta
         ocorrencia.status = 'Respondida'
         historico = Historico(ocorrencia_id=ocorrencia.id, resposta=resposta, status='Respondida')
-        ocorrencia.data_ultima_resposta = datetime.utcnow()
+        fuso_brasil = timezone('America/Sao_Paulo')
+        ocorrencia.data_ultima_resposta = datetime.now(fuso_brasil)
         db.session.add(historico)
         db.session.commit()
         
