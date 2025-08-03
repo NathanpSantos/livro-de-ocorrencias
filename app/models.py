@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from . import db  # <- importa 'db' do __init__.py já inicializado
+import pytz
+from . import db  # importa 'db' do __init__.py já inicializado
+
+fuso_brasil = pytz.timezone("America/Sao_Paulo")
 
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,15 +19,15 @@ class Ocorrencia(db.Model):
     tipo = db.Column(db.String(50), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(50), default='Pendente')
-    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_criacao = db.Column(db.DateTime, default=lambda: datetime.now(fuso_brasil))
     resposta = db.Column(db.Text)
     respondido_por = db.Column(db.String(100))
+    data_ultima_resposta = db.Column(db.DateTime)  # se necessário
     usuario = db.relationship('Usuario', backref='ocorrencias')
-    data_ultima_resposta = db.Column(db.DateTime)
 
 class Historico(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ocorrencia_id = db.Column(db.Integer, db.ForeignKey('ocorrencia.id'), nullable=False)
     status = db.Column(db.String(50))
     resposta = db.Column(db.Text)
-    data_resposta = db.Column(db.DateTime, default=datetime.utcnow)
+    data_resposta = db.Column(db.DateTime, default=lambda: datetime.now(fuso_brasil))
