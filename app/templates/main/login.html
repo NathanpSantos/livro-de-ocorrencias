@@ -14,15 +14,27 @@
             <p style="color:red">{{ erro }}</p>
         {% endif %}
 
-        <form method="post">
-            <label><i class="fas fa-envelope"></i> Email:</label>
+        <form method="POST" action="{{ url_for('main.login') }}">
+            <label for="tipo">Tipo de acesso:</label>
+            <select name="tipo" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="admin">Administrador</option>
+                <option value="morador">Morador</option>
+            </select>
+
+            <label for="email">E-mail:</label>
             <input type="email" name="email" required>
 
-            <label><i class="fas fa-lock"></i> Senha:</label>
+            <label for="senha">Senha:</label>
             <input type="password" name="senha" required>
 
-            <button type="submit"><i class="fas fa-arrow-right-to-bracket"></i> Entrar</button>
+            <button type="submit">Entrar</button>
+
+            {% if erro %}
+                <p style="color: red;">{{ erro }}</p>
+            {% endif %}
         </form>
+
 
         <p style="text-align:center"><a href="{{ url_for('main.cadastro') }}">Não tem conta? Cadastre-se</a></p>
     </div>

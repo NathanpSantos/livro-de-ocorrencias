@@ -56,14 +56,22 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         senha = request.form['senha']
+        tipo_selecionado = request.form['tipo']
+
         usuario = Usuario.query.filter_by(email=email).first()
+
         if usuario and check_password_hash(usuario.senha_hash, senha):
-            session['usuario_id'] = usuario.id
-            session['usuario_tipo'] = usuario.tipo
-            return redirect(url_for('main.painel'))
+            if usuario.tipo == tipo_selecionado:
+                session['usuario_id'] = usuario.id
+                session['usuario_tipo'] = usuario.tipo
+                return redirect(url_for('main.painel'))
+            else:
+                erro = "Tipo de acesso incorreto para este usuário."
         else:
-            erro = "Email ou senha inválidos."
+            erro = "E-mail ou senha inválidos."
+
     return render_template('main/login.html', erro=erro)
+
 
 @main.route('/painel')
 def painel():
